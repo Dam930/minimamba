@@ -1,0 +1,16 @@
+build==1.1.1
+mkdocs==1.5.3
+mkdocs-ivory==0.4.6
+mkdocstrings[python]==0.24.1
+pre-commit==3.7.0
+pytest==8.1.1
+ruff==0.3.4
+black==23.9.1
+flake8==6.1.0
+isort==5.12.0
+nbsphinx==0.9.3
+pydata-sphinx-theme==0.13.3
+pystache==0.6.5
+sphinx==7.2.6
+sphinx-autodoc-typehints==1.24.0
+sphinx-rtd-theme==1.3.0

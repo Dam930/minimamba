@@ -159,8 +159,8 @@ dmypy.json
 cython_debug/
 
 # Project ignores
-*.txt
+/data/**/*.txt
 *.pkl
 *.bin
 lightning_logs
-models/
+/models/

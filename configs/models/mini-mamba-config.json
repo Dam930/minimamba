@@ -1,0 +1,74 @@
+{
+    "@OBJECT_CONFIG": {
+        "__config_class": "minimamba.configs.models.MiniMambaConfig",
+        "__target_class": "minimamba.models.mini_mamba.MiniMamba",
+        "__config_params": {
+            "lr": 2e-4,
+            "vocab_size": 65,
+            "embedding_dim": 64,
+            "blocks": [
+                {
+                    "@SIMPLE_CONFIG":{
+                        "__config_class": "minimamba.configs.models.MiniMambaBlockConfig",
+                        "__config_params": {
+                            "layer_input": 128,
+                            "expansion": 2,
+                            "conv_kernel": 5,
+                            "state_dim": 16,
+                            "fraction_d": 16
+                        }
+                    }
+                },
+                {
+                    "@SIMPLE_CONFIG":{
+                        "__config_class": "minimamba.configs.models.MiniMambaBlockConfig",
+                        "__config_params": {
+                            "layer_input": 128,
+                            "expansion": 2,
+                            "conv_kernel": 5,
+                            "state_dim": 16,
+                            "fraction_d": 16
+                        }
+                    }
+                },
+                {
+                    "@SIMPLE_CONFIG":{
+                        "__config_class": "minimamba.configs.models.MiniMambaBlockConfig",
+                        "__config_params": {
+                            "layer_input": 128,
+                            "expansion": 2,
+                            "conv_kernel": 5,
+                            "fraction_d": 16,
+                            "state_dim": 16,
+                            "layer_out": 256
+                        }
+                    }
+                },
+                {
+                    "@SIMPLE_CONFIG":{
+                        "__config_class": "minimamba.configs.models.MiniMambaBlockConfig",
+                        "__config_params": {
+                            "layer_input": 256,
+                            "expansion": 2,
+                            "conv_kernel": 5,
+                            "fraction_d": 16,
+                            "state_dim": 16
+                        }
+                    }
+                },
+                {
+                    "@SIMPLE_CONFIG":{
+                        "__config_class": "minimamba.configs.models.MiniMambaBlockConfig",
+                        "__config_params": {
+                            "layer_input": 256,
+                            "expansion": 2,
+                            "conv_kernel": 5,
+                            "fraction_d": 16,
+                            "state_dim": 16
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}
