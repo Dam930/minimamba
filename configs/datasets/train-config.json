@@ -1,0 +1,11 @@
+{
+    "@OBJECT_CONFIG": {
+        "__config_class": "minimamba.configs.models.DatasetConfig",
+        "__target_class": "minimamba.data.dataset.Dataset",
+        "__config_params": {
+            "data_path": "data/shakespeare_char/train.bin",
+            "block_size": 128,
+            "epoch_length": 500
+        }
+    }
+}

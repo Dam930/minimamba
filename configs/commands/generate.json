@@ -1,0 +1,12 @@
+{
+    "@COMMAND_CONFIG": {
+        "__config_class": "minimamba.configs.models.GenerateCommandConfig",
+        "__config_params": {
+            "path_pretrained": "checkpoint-epoch=09.ckpt",
+            "nn_config": 
+            {
+                "@CONFIG_LINK": "models.mini-mamba-config"
+            }     
+        }
+    }
+}

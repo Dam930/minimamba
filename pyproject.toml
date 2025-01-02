@@ -1,0 +1,56 @@
+[build-system]
+requires = ["setuptools==68.2.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "minimamba"
+version = "0.0.1"
+description = "Implementation of a minimal structure of the Mamba model"
+readme = "README.md"
+authors = [
+    {name="Damiano Binaghi", email="damiano.binaghi@artificialy.com"}
+]
+classifiers = [
+    "Intended Audience :: Developers",
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+keywords = ['python', ' llm', ' mamba', ' ssm', ' nlp']
+dynamic = ["dependencies", "optional-dependencies"]
+requires-python = ">=3.9, <3.12"
+license = {file = "LICENSE"}
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+optional-dependencies = {dev = { file = ["requirements_dev.txt"] }}
+
+[project.scripts]
+minimamba = "minimamba.__main__:main"
+
+[project.urls]
+Home-page = "https://www.artificialy.com"
+Documentation = "https://www.artificialy.com"
+Changelog = "https://www.artificialy.com"
+
+[tool.setuptools.packages.find]
+where = ["."]
+
+[tool.ruff]
+line-length = 90
+include = ["*.py"]
+
+[tool.ruff.format]
+docstring-code-format = true
+line-ending = "lf"
+
+[tool.ruff.lint]
+select = ["E", "W", "I", "F", "D", "C90", "PGH", "RUF"]
+ignore = ["D10", "RUF010"]
+
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]

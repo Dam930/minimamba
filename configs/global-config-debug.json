@@ -1,0 +1,8 @@
+{
+    "@SIMPLE_CONFIG": {
+        "__config_class": "minimamba.configs.models.GlobalContextConfig",
+        "__config_params": {
+            "working_dir": "logs/tmp/debug"
+        }
+    }
+}

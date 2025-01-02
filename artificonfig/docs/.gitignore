@@ -1,0 +1,5 @@
+# Themes, to be downloaded, build and autosommary
+_autosummary/
+_build/
+_static/
+_templates/

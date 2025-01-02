@@ -1,0 +1,11 @@
+{
+    "@OBJECT_CONFIG": {
+        "__target_class": "artificonfig.test.tool.Tool",
+        "__config_class": "artificonfig.configs.models.AdvancedToolConfig",
+        "__config_params": {
+            "param_1": "Tool Parameter",
+            "param_2": 10,
+            "param_advanced": 3.14
+        }
+    }
+}

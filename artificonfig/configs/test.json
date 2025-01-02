@@ -1,0 +1,17 @@
+{
+    "@COMMAND_CONFIG": {
+        "__config_class": "artificonfig.configs.models.TestCommandConfig",
+        "__config_params": {
+            "param_1": 10.0,
+            "tools": [
+                {
+                    "@CONFIG_LINK": "tools.tool"
+                },
+                {
+                    "@CONFIG_LINK": "tools.advanced-tool"
+                }
+            ],
+            "url": "http:/www.google.com"
+        }
+    }
+}

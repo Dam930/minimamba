@@ -1,0 +1,21 @@
+{
+    "@COMMAND_CONFIG": {
+        "__config_class": "minimamba.configs.models.TrainCommandConfig",
+        "__config_params": {
+            "batch_size": 16,
+            "num_epochs": 50,
+            "nn_config": 
+            {
+                "@CONFIG_LINK": "models.mini-mamba-config"
+            },
+            "train_config": 
+            {
+                "@CONFIG_LINK": "datasets.train-config"
+            },
+            "val_config": 
+            {
+                "@CONFIG_LINK": "datasets.val-config"
+            }            
+        }
+    }
+}

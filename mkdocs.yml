@@ -1,0 +1,13 @@
+site_name: Artificialy's Python Template
+
+theme:
+  name: ivory
+
+nav:
+  - "Home": index.md
+  - "Tutorials":
+      - "Index": "tutorials.md"
+      - "tutorials/project-setup.md"
+      - "Implementing a new command":
+          - "Start": "tutorials/new-command.md"
+          - "tutorials/new-command/creating-command.md"

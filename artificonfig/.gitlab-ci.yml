@@ -1,0 +1,150 @@
+# jobs of the same stage are executed in parallel
+# next stage starts after successful completion of previous stage
+stages:
+  - test
+  - version
+  - deploy
+
+### VARIABLES (accessible from all jobs)
+variables:
+  PYTHON_VERSION: "3.10" # python version of the project, use it later as $PYTHON_VERSION
+# other available variables: https://docs.gitlab.com/ee/ci/variables/predefined_variables.html
+
+.authentication-job: # the leading point makes the job hidden, i.e. it will not run
+  image: python:$PYTHON_VERSION
+  before_script:
+    # authenticate runner
+    - echo "machine gitlab.com" > ~/.netrc
+    - echo "login gitlab-ci-token" >> ~/.netrc
+    - echo "password ${CI_JOB_TOKEN}" >> ~/.netrc
+    # install private dependencies using https instead of ssh (auth above is for https)
+    - git config --global url."https://gitlab.com/".insteadOf "ssh://git@gitlab.com"
+
+### TEST STAGE
+pre-commit-job:
+  extends: .authentication-job # inherit config (i.e. before_script) from .authentication-job
+  stage: test
+  script:
+    - echo "installing dependencies"
+    - pip install -e '.[dev]'
+    - python -m artificonfig --version
+    - echo "running pre-commit"
+    - pre-commit install
+    - pre-commit --version
+    - pre-commit run --all-files
+    - echo "pre-commit ended successfully"
+  rules: # 'rules' keyword specifies when the job should run
+    # in this case, the job run in merge request pipelines
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+
+test-job:
+  extends: .authentication-job
+  stage: test
+  script:
+    - echo "installing dependencies"
+    - pip install -e '.[dev]'
+    - python -m artificonfig --version
+    - echo "running tests"
+    - make test
+    - echo "tests ended successfully"
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+
+### VERSION STAGE
+.default-version-job:
+  image: python:$PYTHON_VERSION
+  stage: version
+  before_script:
+    - git config --global user.email "devops@artificialy.com"
+    - git config --global user.name "DevOps Pipeline"
+    - >
+      if [ ${CI_ACCESS_TOKEN} == ""] ;
+      then
+        echo "CI_ACCESS_TOKEN not found. Unable to build the version"
+        exit 1
+      fi
+    - git remote set-url origin https://oauth2:${CI_ACCESS_TOKEN}@gitlab.com/${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}.git
+  after_script:
+    - VERSION_CHANGED=$(cat version-changed.txt)
+    - echo "VERSION_CHANGED = $VERSION_CHANGED"
+    - >
+      if [ $VERSION_CHANGED == 1 ];
+      then
+        echo "building version and uploading to the package registry"
+        pip install build==1.0.3
+        pip install twine==4.0.2
+        python -m build
+        TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=gitlab-ci-token python -m twine upload --repository-url ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi dist/*
+      fi
+
+development-version-job:
+  extends: .default-version-job
+  script:
+    - VERSION="v$(python -m utils.version --ignore-stab)a"
+    - echo $VERSION
+    - >
+      if [ $(git tag -l "$VERSION") ];
+      then
+        echo "Version $VERSION already exists. Skipping tag creation."
+        echo 0 > version-changed.txt
+      else
+        echo "creating new version $VERSION"
+        COMMIT_SHA=$(git log -n 1 --pretty=format:"%H")
+        curl -X POST --header "JOB-TOKEN: $CI_JOB_TOKEN" --form "tag_name=$VERSION" --form "ref=$COMMIT_SHA" "$CI_API_V4_URL/projects/${CI_PROJECT_ID}/releases"
+        echo 1 > version-changed.txt
+      fi
+  rules:
+    - if: $CI_COMMIT_BRANCH == "development"
+
+staging-version-job:
+  extends: .default-version-job
+  script:
+    - VERSION="v$(python -m utils.version --ignore-stab)b"
+    - >
+      if [ $(git tag -l "$VERSION") ];
+      then
+        echo "Version $VERSION already exists. Cannot proceed with tag creation, please update the version."
+        echo 0 > version-changed.txt
+        exit 1
+      else
+        echo "creating new version $VERSION"
+        make beta
+        COMMIT_SHA=$(git log -n 1 --pretty=format:"%H")
+        curl -X POST --header "JOB-TOKEN: $CI_JOB_TOKEN" --form "tag_name=$VERSION" --form "ref=$COMMIT_SHA" "$CI_API_V4_URL/projects/${CI_PROJECT_ID}/releases"
+        echo 1 > version-changed.txt
+      fi
+  rules:
+    - if: $CI_COMMIT_BRANCH == "staging"
+
+production-version-job:
+  extends: .default-version-job
+  script:
+    - VERSION="v$(python -m utils.version --ignore-stab)"
+    - >
+      if [ $(git tag -l "$VERSION") ];
+      then
+        echo "Version $VERSION already exists. Cannot proceed with tag creation, please update the version."
+        echo 0 > version-changed.txt
+        exit 1
+      else
+        echo "creating new version $VERSION"
+        make stable
+        COMMIT_SHA=$(git log -n 1 --pretty=format:"%H")
+        curl -X POST --header "JOB-TOKEN: $CI_JOB_TOKEN" --form "tag_name=$VERSION" --form "ref=$COMMIT_SHA" "$CI_API_V4_URL/projects/${CI_PROJECT_ID}/releases"
+        echo 1 > version-changed.txt
+      fi
+  rules:
+    - if: $CI_COMMIT_BRANCH == "production"
+
+### DEPLOY STAGE
+.deploy-job:
+  stage: deploy
+  environment:
+    name: production
+  #   url: https://url.production.example.com
+  script:
+    - echo "deploying application"
+    # add your code to deploy application
+    - echo "application successfully deployed"
+  rules:
+    - if: $CI_COMMIT_BRANCH == "production"
