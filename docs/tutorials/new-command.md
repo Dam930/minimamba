@@ -21,6 +21,6 @@ Instead, the command system standardizes the project structure and fosters the o
 
 The tutorial is a good chance to present a set of **guidelines and best practices** that should be followed during the project development. They do not pretend to be the best options, but they will help to keep projects as clean as possible and they will uniform the project here in Artificialy, helping the collaboration between different teams and people.
 
-As we will see, implementing a command involves using configuration files and the internal `artificonfig` configuration library.
+As we will see, implementing a command involves using configuration files and the internal `configmanager` configuration library.
 
 If you have suggestions or improvements, please open an issue on GitLab.

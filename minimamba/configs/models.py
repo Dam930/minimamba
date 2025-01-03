@@ -7,7 +7,7 @@
 from pathlib import Path
 
 from typing import List, Optional
-from artificonfig.core.models import BaseConfig, BaseObjectConfig, BaseCommandConfig
+from configmanager.core.models import BaseConfig, BaseObjectConfig, BaseCommandConfig
 from pydantic import StrictStr, StrictInt, StrictFloat
 
 

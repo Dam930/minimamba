@@ -1,6 +1,6 @@
 import logging
 import torch
-from artificonfig.core.utils import get_target_class_from_config
+from configmanager.core.utils import get_target_class_from_config
 import torch.utils
 import torch.utils.data
 import os

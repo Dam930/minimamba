@@ -37,7 +37,7 @@ def main(config: PrintMessageCommandConfig):
 `<project_name>/commands/print_message.py`
 
 ```python
-from artificonfig.core.models import BaseCommandConfig
+from configmanager.core.models import BaseCommandConfig
 from pydantic import StrictStr
 
 ...
@@ -108,19 +108,19 @@ The command as it is cannot be executed yet. Indeed, we need a way to specify th
 
 Configuration objects for commands replace the command line arguments: the CLI is not customizable, and if we want to configure the command execution we have to create and modify a configuration object for it.
 
-> **NOTE:** The only configuration library currently supported is the internal `artificonfig`.
+> **NOTE:** The only configuration library currently supported is the internal `configmanager`.
 
 `configs/models.py` is the default file where configuration classes are defined. Here we add the configuration class for our `print-message`:
 
 ```python
-from artificonfig.core.models import BaseCommandConfig
+from configmanager.core.models import BaseCommandConfig
 from pydantic import StrictStr
 
 class PrintMessageConfig(BaseCommandConfig):
     message: StrictStr
 ```
 
-**Every command configuration class must inherit from BaseCommandConfig, provided by `artificonfig`**.  
+**Every command configuration class must inherit from BaseCommandConfig, provided by `configmanager`**.  
 Our config class contains the string to be printed by the command. By defining the config fields through Pydantic types we enable the type validation features.
 
 Now we have to modify the `main` function in `commands/print_message.py` to accept and use the new config object:

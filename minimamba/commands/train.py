@@ -3,7 +3,7 @@ import torch
 from pytorch_lightning import Trainer
 from pytorch_lightning.loggers import WandbLogger
 from pytorch_lightning.callbacks import ModelCheckpoint
-from artificonfig.core.utils import create_obj_from_config
+from configmanager.core.utils import create_obj_from_config
 import torch.utils
 import torch.utils.data
 
