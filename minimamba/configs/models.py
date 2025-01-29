@@ -47,6 +47,7 @@ class DatasetConfig(BaseObjectConfig):
 class TrainCommandConfig(BaseCommandConfig):
     batch_size: StrictInt
     num_epochs: StrictInt
+    num_workers: StrictInt
     nn_config: NNConfig
     train_config: DatasetConfig
     val_config: DatasetConfig

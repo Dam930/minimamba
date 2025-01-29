@@ -4,6 +4,7 @@
         "__config_params": {
             "batch_size": 16,
             "num_epochs": 50,
+            "num_workers": 8,
             "nn_config": 
             {
                 "@CONFIG_LINK": "models.mini-mamba-config"

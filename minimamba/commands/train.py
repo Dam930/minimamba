@@ -33,10 +33,16 @@ def main(config: TrainCommandConfig):
     )
     dataset_val: torch.utils.data.Dataset = create_obj_from_config(config.val_config)
     dataloader_train = torch.utils.data.DataLoader(
-        dataset_train, config.batch_size, num_workers=7, persistent_workers=True
+        dataset_train,
+        config.batch_size,
+        num_workers=config.num_workers,
+        persistent_workers=True,
     )
     dataloader_val = torch.utils.data.DataLoader(
-        dataset_val, config.batch_size, num_workers=7, persistent_workers=True
+        dataset_val,
+        config.batch_size,
+        num_workers=config.num_workers,
+        persistent_workers=True,
     )
 
     # Create the NN
